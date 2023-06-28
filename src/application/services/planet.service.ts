@@ -1,7 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Planet } from '../../domain/models/planet.entity';
 import { Repository } from 'typeorm';
+import { CreatePlanetInput } from 'src/presentation/dtos/planet/create-planet.input';
 
 @Injectable()
 export class PlanetService {
@@ -29,5 +34,18 @@ export class PlanetService {
       throw new NotFoundException('Planet not found');
     }
     return planet;
+  }
+
+  async create(data: CreatePlanetInput): Promise<Planet> {
+    const planet = this.planetRepository.create(data);
+    const planetSaved = await this.planetRepository.save(planet);
+
+    if (!planetSaved) {
+      throw new InternalServerErrorException(
+        'Problem to create planet. Try again',
+      );
+    }
+
+    return planetSaved;
   }
 }
