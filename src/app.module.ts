@@ -8,6 +8,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UserModule } from './infra/ioc/user.module';
 import { PlanetModule } from './infra/ioc/planet.module';
 import { SeedModule } from './infra/ioc/seed.module';
+import { StationModule } from './infra/ioc/station.module';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -32,6 +33,7 @@ dotenv.config();
     UserModule,
     PlanetModule,
     SeedModule,
+    StationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

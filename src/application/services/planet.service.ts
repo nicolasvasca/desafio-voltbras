@@ -48,4 +48,17 @@ export class PlanetService {
 
     return planetSaved;
   }
+
+  async updateHasStation(id: string): Promise<Planet> {
+    const planet = await this.findById(id);
+
+    await this.planetRepository.update(planet, { hasStation: true });
+
+    const planetUpdated = this.planetRepository.create({
+      ...planet,
+      hasStation: true,
+    });
+
+    return planetUpdated;
+  }
 }
