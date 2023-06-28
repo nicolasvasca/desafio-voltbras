@@ -14,6 +14,6 @@ export class Planet {
   @Column({ default: false })
   hasStation: boolean;
 
-  @Column()
+  @Column({ type: 'float' })
   mass: number;
 }
