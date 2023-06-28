@@ -6,8 +6,11 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UserModule } from './infra/ioc/user.module';
+import { PlanetModule } from './infra/ioc/planet.module';
 import * as dotenv from 'dotenv';
+
 dotenv.config();
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -26,6 +29,7 @@ dotenv.config();
       driver: ApolloDriver,
     }),
     UserModule,
+    PlanetModule,
   ],
   controllers: [AppController],
   providers: [AppService],

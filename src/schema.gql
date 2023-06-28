@@ -8,9 +8,18 @@ type User {
   email: String!
 }
 
+type Planet {
+  id: ID!
+  name: String!
+  hasStation: Boolean!
+  mass: Float!
+}
+
 type Query {
   users: [User!]!
   user(id: String!): User!
+  suitablePlanets: [Planet!]!
+  planet(id: String!): Planet!
 }
 
 type Mutation {
