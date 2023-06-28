@@ -32,6 +32,7 @@ type Query {
   user(id: String!): User!
   suitablePlanets: [Planet!]!
   planet(id: String!): Planet!
+  stations: [Station!]!
 }
 
 type Mutation {

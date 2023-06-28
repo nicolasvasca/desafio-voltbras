@@ -34,4 +34,13 @@ export class StationService {
     }
     return stationSaved;
   }
+
+  async find(): Promise<Station[]> {
+    const station = await this.stationRepository.find({
+      relations: {
+        planet: true,
+      },
+    });
+    return station;
+  }
 }
