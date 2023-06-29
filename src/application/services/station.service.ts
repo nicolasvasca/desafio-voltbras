@@ -27,7 +27,7 @@ export class StationService {
 
     if (!stationSaved) {
       throw new InternalServerErrorException(
-        'Problem to create planet. Try again',
+        'Problem to create a station. Try again',
       );
     }
     if (!planet.hasStation) {

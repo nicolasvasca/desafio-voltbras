@@ -55,7 +55,7 @@ export class RechargeService {
 
     if (!rechargeSaved) {
       throw new InternalServerErrorException(
-        'Problem to create planet. Try again',
+        'Problem to create a recharge. Try again',
       );
     }
     return rechargeSaved;
