@@ -3,7 +3,10 @@ import { UserService } from '../../src/application/services/user.service';
 import { User } from '../../src/domain/models/user.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import MockUser from './__mocks__/mock-user';
-import { InternalServerErrorException } from '@nestjs/common';
+import {
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 
 describe('UserService', () => {
   let service: UserService;
@@ -52,16 +55,20 @@ describe('UserService', () => {
     });
   });
 
-  describe('When search All Users', () => {
-    it('should be list all users', async () => {
+  describe('When serch User By Id', () => {
+    it('should find a existing user', async () => {
       const user = MockUser.mockUser();
-      mockRepository.find.mockReturnValue([user, user]);
-      const users = await service.find();
-      expect(users).toHaveLength(2);
-      expect(mockRepository.find).toHaveBeenCalledTimes(1);
+      mockRepository.findOne.mockReturnValue(user);
+      const userFound = await service.findById('1');
+      expect(userFound).toMatchObject({ name: user.name });
+      expect(mockRepository.findOne).toHaveBeenCalledTimes(1);
+    });
+    it('should return a exception when does not to find a user', async () => {
+      mockRepository.findOne.mockReturnValue(null);
+      expect(service.findById('3')).rejects.toBeInstanceOf(NotFoundException);
+      expect(mockRepository.findOne).toHaveBeenCalledTimes(1);
     });
   });
-
   describe('When create user', () => {
     it('should create a user', async () => {
       const user = MockUser.mockUser();
