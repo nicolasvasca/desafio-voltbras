@@ -31,7 +31,14 @@ export class StationService {
       );
     }
     if (!planet.hasStation) {
-      await this.planetService.updateHasStation(planet.id);
+      const updatedPlanet = await this.planetService.updateHasStation(
+        planet.id,
+      );
+      if (!updatedPlanet) {
+        throw new InternalServerErrorException(
+          'Problem to update Planet. Try again',
+        );
+      }
     }
     return stationSaved;
   }
