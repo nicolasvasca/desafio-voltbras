@@ -86,12 +86,12 @@ describe('StationService', () => {
         hasStation: true,
       });
 
-      const savedPlanet = await service.create({
+      const savedStation = await service.create({
         name: station.name,
         planetName: station.planet.name,
       });
 
-      expect(savedPlanet).toMatchObject(station);
+      expect(savedStation).toMatchObject(station);
       expect(mockRepository.create).toBeCalledTimes(1);
       expect(mockRepository.save).toBeCalledTimes(1);
     });
