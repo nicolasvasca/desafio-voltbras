@@ -44,7 +44,7 @@ describe('UserService', () => {
 
   describe('When search All Users', () => {
     it('should be list all users', async () => {
-      const user = MockUser.giveAMeAValidUser();
+      const user = MockUser.mockUser();
       mockRepository.find.mockReturnValue([user, user]);
       const users = await service.find();
       expect(users).toHaveLength(2);
@@ -54,7 +54,7 @@ describe('UserService', () => {
 
   describe('When search All Users', () => {
     it('should be list all users', async () => {
-      const user = MockUser.giveAMeAValidUser();
+      const user = MockUser.mockUser();
       mockRepository.find.mockReturnValue([user, user]);
       const users = await service.find();
       expect(users).toHaveLength(2);
@@ -64,7 +64,7 @@ describe('UserService', () => {
 
   describe('When create user', () => {
     it('should create a user', async () => {
-      const user = MockUser.giveAMeAValidUser();
+      const user = MockUser.mockUser();
       mockRepository.save.mockReturnValue(user);
       mockRepository.create.mockReturnValue(user);
       const savedUser = await service.createUser(user);
@@ -74,7 +74,7 @@ describe('UserService', () => {
       expect(mockRepository.save).toBeCalledTimes(1);
     });
     it('should return a exception when doesnt create a user', async () => {
-      const user = MockUser.giveAMeAValidUser();
+      const user = MockUser.mockUser();
       mockRepository.save.mockReturnValue(null);
       mockRepository.create.mockReturnValue(user);
 
@@ -91,7 +91,7 @@ describe('UserService', () => {
 
   describe('When update User', () => {
     it('Should update a user', async () => {
-      const user = MockUser.giveAMeAValidUser();
+      const user = MockUser.mockUser();
       const updatedUser = { name: 'Nome Atualizado' };
       mockRepository.findOne.mockReturnValue(user);
       mockRepository.update.mockReturnValue({
@@ -117,7 +117,7 @@ describe('UserService', () => {
 
   describe('When delete User', () => {
     it('Should delete a existing user', async () => {
-      const user = MockUser.giveAMeAValidUser();
+      const user = MockUser.mockUser();
       mockRepository.delete.mockReturnValue(user);
       mockRepository.findOne.mockReturnValue(user);
 
@@ -129,7 +129,7 @@ describe('UserService', () => {
     });
 
     it('Should not delete a inexisting user', async () => {
-      const user = MockUser.giveAMeAValidUser();
+      const user = MockUser.mockUser();
       mockRepository.delete.mockReturnValue(null);
       mockRepository.findOne.mockReturnValue(user);
 

@@ -1,7 +1,7 @@
 import { User } from '../../../src/domain/models/user.entity';
 
 export default class MockUser {
-  static giveAMeAValidUser(): User {
+  static mockUser(): User {
     const user = new User();
     user.email = 'valid@email.com';
     user.name = 'Angelo Luz';
