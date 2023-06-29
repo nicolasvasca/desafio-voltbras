@@ -5,17 +5,12 @@ import { PlanetService } from '../../src/application/services/planet.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Planet } from '../../src/domain/models/planet.entity';
 import { NasaGateway } from '../../src/infra/gateway/NasaGateway';
+import MockRepository from './__mocks__/mock-repository';
 
 describe('SeedService', () => {
   let service: SeedService;
-  const mockRepository = {
-    find: jest.fn(),
-    findOne: jest.fn(),
-    create: jest.fn(),
-    save: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
-  };
+  const mockRepository = MockRepository.mockRepository();
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [HttpModule],

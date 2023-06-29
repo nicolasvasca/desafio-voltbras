@@ -8,17 +8,11 @@ import { User } from '../../src/domain/models/user.entity';
 import { Station } from '../../src/domain/models/station.entity';
 import { Planet } from '../../src/domain/models/planet.entity';
 import { PlanetService } from '../../src/application/services/planet.service';
+import MockRepository from './__mocks__/mock-repository';
 
 describe('RechargeService', () => {
   let service: RechargeService;
-  const mockRepository = {
-    find: jest.fn(),
-    findOne: jest.fn(),
-    create: jest.fn(),
-    save: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
-  };
+  const mockRepository = MockRepository.mockRepository();
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [

@@ -7,17 +7,11 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
+import MockRepository from './__mocks__/mock-repository';
 
 describe('UserService', () => {
   let service: UserService;
-  const mockRepository = {
-    find: jest.fn(),
-    findOne: jest.fn(),
-    create: jest.fn(),
-    save: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
-  };
+  let mockRepository = MockRepository.mockRepository();
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -33,12 +27,7 @@ describe('UserService', () => {
   });
 
   beforeEach(() => {
-    mockRepository.find.mockReset();
-    mockRepository.findOne.mockReset();
-    mockRepository.create.mockReset();
-    mockRepository.save.mockReset();
-    mockRepository.update.mockReset();
-    mockRepository.delete.mockReset();
+    mockRepository = MockRepository.resetMocks(mockRepository);
   });
 
   it('should be defined', () => {
