@@ -48,7 +48,7 @@ export class StationService {
   async findById(id: string): Promise<Station> {
     const station = await this.stationRepository.findOneById(id);
     if (!station) {
-      throw new NotFoundException('Planet not found');
+      throw new NotFoundException('Station not found');
     }
     return station;
   }
