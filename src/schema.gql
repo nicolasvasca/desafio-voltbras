@@ -27,12 +27,21 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Recharge {
+  id: ID!
+  user: User!
+  station: Station!
+  started: DateTime!
+  finished: DateTime!
+}
+
 type Query {
   users: [User!]!
   user(id: String!): User!
   suitablePlanets: [Planet!]!
   planet(id: String!): Planet!
   stations: [Station!]!
+  stationHistory(stationId: String!): [Recharge!]!
 }
 
 type Mutation {
@@ -40,6 +49,8 @@ type Mutation {
   updateUser(id: String!, data: UpdateUserInput!): User!
   deleteUser(id: String!): Boolean!
   installStation(input: CreateStationInput!): Station!
+  recharge(input: CreateRechargeInput!): Recharge!
+  finishRecharge(id: String!): Recharge!
 }
 
 input CreateUserInput {
@@ -55,4 +66,9 @@ input UpdateUserInput {
 input CreateStationInput {
   name: String!
   planetName: String!
+}
+
+input CreateRechargeInput {
+  userId: String!
+  stationId: String!
 }

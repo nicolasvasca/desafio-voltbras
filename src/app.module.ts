@@ -9,6 +9,7 @@ import { UserModule } from './infra/ioc/user.module';
 import { PlanetModule } from './infra/ioc/planet.module';
 import { SeedModule } from './infra/ioc/seed.module';
 import { StationModule } from './infra/ioc/station.module';
+import { RechargeModule } from './infra/ioc/recharge.module';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -34,6 +35,7 @@ dotenv.config();
     PlanetModule,
     SeedModule,
     StationModule,
+    RechargeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

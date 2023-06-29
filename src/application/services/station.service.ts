@@ -2,6 +2,7 @@ import {
   Inject,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
   forwardRef,
 } from '@nestjs/common';
 import { Station } from '../../domain/models/station.entity';
@@ -41,6 +42,14 @@ export class StationService {
         planet: true,
       },
     });
+    return station;
+  }
+
+  async findById(id: string): Promise<Station> {
+    const station = await this.stationRepository.findOneById(id);
+    if (!station) {
+      throw new NotFoundException('Station not found');
+    }
     return station;
   }
 }

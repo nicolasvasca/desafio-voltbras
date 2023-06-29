@@ -21,11 +21,11 @@ export class PlanetService {
   }
 
   async findById(id: string): Promise<Planet> {
-    const user = await this.planetRepository.findOneById(id);
-    if (!user) {
+    const planet = await this.planetRepository.findOneById(id);
+    if (!planet) {
       throw new NotFoundException('Planet not found');
     }
-    return user;
+    return planet;
   }
 
   async findByName(name: string): Promise<Planet> {
