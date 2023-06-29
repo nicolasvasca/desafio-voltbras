@@ -9,7 +9,7 @@ import { Station } from '../../domain/models/station.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateStationInput } from '../../presentation/dtos/station/create-station.input';
-import { PlanetService } from 'src/application/services/planet.service';
+import { PlanetService } from './planet.service';
 
 @Injectable()
 export class StationService {
@@ -27,11 +27,18 @@ export class StationService {
 
     if (!stationSaved) {
       throw new InternalServerErrorException(
-        'Problem to create planet. Try again',
+        'Problem to create a station. Try again',
       );
     }
     if (!planet.hasStation) {
-      await this.planetService.updateHasStation(planet.id);
+      const updatedPlanet = await this.planetService.updateHasStation(
+        planet.id,
+      );
+      if (!updatedPlanet) {
+        throw new InternalServerErrorException(
+          'Problem to update Planet. Try again',
+        );
+      }
     }
     return stationSaved;
   }

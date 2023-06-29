@@ -28,19 +28,19 @@ export class RechargeService {
     const user = await this.userService.findById(data.userId);
     const station = await this.stationService.findById(data.stationId);
     const started = new Date();
-    const userRechargeInProgress = await this.rechargeRepository.find({
+    const userRechargeInProgress = await this.rechargeRepository.findOne({
       where: { user: { id: user.id }, finished: MoreThanOrEqual(started) },
     });
-    if (userRechargeInProgress.length > 0) {
+    if (userRechargeInProgress) {
       throw new BadRequestException('User already has recharge in progress');
     }
-    const stationRechargeInProgress = await this.rechargeRepository.find({
+    const stationRechargeInProgress = await this.rechargeRepository.findOne({
       where: {
         station: { id: station.id },
         finished: MoreThanOrEqual(started),
       },
     });
-    if (stationRechargeInProgress.length > 0) {
+    if (stationRechargeInProgress) {
       throw new BadRequestException('Station already has recharge in progress');
     }
 
@@ -55,7 +55,7 @@ export class RechargeService {
 
     if (!rechargeSaved) {
       throw new InternalServerErrorException(
-        'Problem to create planet. Try again',
+        'Problem to create a recharge. Try again',
       );
     }
     return rechargeSaved;

@@ -6,7 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Planet } from '../../domain/models/planet.entity';
 import { Repository } from 'typeorm';
-import { CreatePlanetInput } from 'src/presentation/dtos/planet/create-planet.input';
+import { CreatePlanetInput } from '../../presentation/dtos/planet/create-planet.input';
 
 @Injectable()
 export class PlanetService {
@@ -42,7 +42,7 @@ export class PlanetService {
 
     if (!planetSaved) {
       throw new InternalServerErrorException(
-        'Problem to create planet. Try again',
+        'Problem to create a planet. Try again',
       );
     }
 
