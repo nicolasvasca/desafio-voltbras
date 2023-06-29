@@ -26,5 +26,6 @@ export class SeedService {
       );
       console.log('seed finished');
     }
+    return true;
   }
 }
