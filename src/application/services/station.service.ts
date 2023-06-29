@@ -46,7 +46,7 @@ export class StationService {
   }
 
   async findById(id: string): Promise<Station> {
-    const station = await this.stationRepository.findOneById(id);
+    const station = await this.stationRepository.findOne({ where: { id } });
     if (!station) {
       throw new NotFoundException('Station not found');
     }
