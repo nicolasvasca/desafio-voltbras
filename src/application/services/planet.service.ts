@@ -21,7 +21,7 @@ export class PlanetService {
   }
 
   async findById(id: string): Promise<Planet> {
-    const planet = await this.planetRepository.findOneById(id);
+    const planet = await this.planetRepository.findOne({ where: { id } });
     if (!planet) {
       throw new NotFoundException('Planet not found');
     }

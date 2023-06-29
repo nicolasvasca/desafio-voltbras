@@ -62,7 +62,7 @@ export class RechargeService {
   }
 
   async findById(id: string): Promise<Recharge> {
-    const recharge = await this.rechargeRepository.findOneById(id);
+    const recharge = await this.rechargeRepository.findOne({ where: { id } });
     if (!recharge) {
       throw new NotFoundException('Recharge not found');
     }
