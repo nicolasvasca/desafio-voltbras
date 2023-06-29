@@ -1,0 +1,22 @@
+version: '2.0'
+
+services: 
+  api:
+    build: .
+    ports: 
+    - "3000:3000"
+    volumes: 
+      - .:/app
+      - /app/node_modules
+  
+  database: 
+    image: postgres:14
+    environment:
+      POSTGRES_DB: ${DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+    - "5433:5432"
+       
+      
+
