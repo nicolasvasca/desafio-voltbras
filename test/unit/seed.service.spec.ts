@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SeedService } from './seed.service';
+import { SeedService } from '../../src/application/services/seed.service';
 import { HttpModule } from '@nestjs/axios';
-import { PlanetService } from './planet.service';
+import { PlanetService } from '../../src/application/services/planet.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Planet } from '../../domain/models/planet.entity';
-import { NasaGateway } from '../../infra/gateway/NasaGateway';
+import { Planet } from '../../src/domain/models/planet.entity';
+import { NasaGateway } from '../../src/infra/gateway/NasaGateway';
 
 describe('SeedService', () => {
   let service: SeedService;

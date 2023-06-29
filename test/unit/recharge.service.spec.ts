@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { RechargeService } from './recharge.service';
+import { RechargeService } from '../../src/application/services/recharge.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Recharge } from '../../domain/models/recharge.entity';
-import { StationService } from './station.service';
-import { UserService } from './user.service';
-import { User } from '../../domain/models/user.entity';
-import { Station } from '../../domain/models/station.entity';
-import { Planet } from '../../domain/models/planet.entity';
-import { PlanetService } from './planet.service';
+import { Recharge } from '../../src/domain/models/recharge.entity';
+import { StationService } from '../../src/application/services/station.service';
+import { UserService } from '../../src/application/services/user.service';
+import { User } from '../../src/domain/models/user.entity';
+import { Station } from '../../src/domain/models/station.entity';
+import { Planet } from '../../src/domain/models/planet.entity';
+import { PlanetService } from '../../src/application/services/planet.service';
 
 describe('RechargeService', () => {
   let service: RechargeService;

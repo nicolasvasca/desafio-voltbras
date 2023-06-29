@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { StationService } from './station.service';
-import { Station } from '../../domain/models/station.entity';
+import { StationService } from '../../src/application/services/station.service';
+import { Station } from '../../src/domain/models/station.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { PlanetService } from './planet.service';
-import { Planet } from '../../domain/models/planet.entity';
+import { PlanetService } from '../../src/application/services/planet.service';
+import { Planet } from '../../src/domain/models/planet.entity';
 
 describe('StationService', () => {
   let service: StationService;
