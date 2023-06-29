@@ -9,7 +9,7 @@ import { Station } from '../../domain/models/station.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateStationInput } from '../../presentation/dtos/station/create-station.input';
-import { PlanetService } from 'src/application/services/planet.service';
+import { PlanetService } from './planet.service';
 
 @Injectable()
 export class StationService {

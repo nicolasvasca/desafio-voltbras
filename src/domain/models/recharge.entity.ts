@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User } from './user.entity';
-import { Station } from 'src/domain/models/station.entity';
+import { Station } from './station.entity';
 
 @ObjectType()
 @Entity()
