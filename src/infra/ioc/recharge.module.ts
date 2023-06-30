@@ -5,12 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Recharge } from '../../domain/models/recharge.entity';
 import { StationModule } from './station.module';
 import { UserModule } from './user.module';
+import { ReservationModule } from './reservation.module';
 
 @Module({
   imports: [
     forwardRef(() => StationModule),
     forwardRef(() => UserModule),
     TypeOrmModule.forFeature([Recharge]),
+    forwardRef(() => ReservationModule),
   ],
   providers: [RechargeService, RechargeResolver],
   exports: [RechargeService],

@@ -12,6 +12,8 @@ import { MoreThanOrEqual, Repository } from 'typeorm';
 import { StationService } from './station.service';
 import { UserService } from './user.service';
 import { CreateRechargeInput } from '../../presentation/dtos/recharge/create-recharge.input';
+import { ReservationService } from './reservation.service';
+import VerifyDate from '../../utils/helpers/verify-date';
 
 @Injectable()
 export class RechargeService {
@@ -22,11 +24,28 @@ export class RechargeService {
     private readonly stationService: StationService,
     @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
+    @Inject(forwardRef(() => ReservationService))
+    private readonly reservationService: ReservationService,
   ) {}
 
   async create(data: CreateRechargeInput): Promise<Recharge> {
-    const user = await this.userService.findById(data.userId);
-    const station = await this.stationService.findById(data.stationId);
+    let reservation = data?.reservationId
+      ? await this.reservationService.findById(data.reservationId)
+      : null;
+
+    if (
+      reservation &&
+      !VerifyDate.isAValidReservationDate(new Date(), reservation)
+    ) {
+      throw new BadRequestException('The reservation is not valid!');
+    }
+
+    const user = await this.userService.findById(
+      reservation ? reservation.user.id : data.userId,
+    );
+    const station = await this.stationService.findById(
+      reservation ? reservation.station.id : data.stationId,
+    );
     const started = new Date();
     const userRechargeInProgress = await this.rechargeRepository.findOne({
       where: { user: { id: user.id }, finished: MoreThanOrEqual(started) },
@@ -43,8 +62,38 @@ export class RechargeService {
     if (stationRechargeInProgress) {
       throw new BadRequestException('Station already has recharge in progress');
     }
+    let finished = reservation
+      ? reservation.finished
+      : new Date(started.getTime() + 60 * 60 * 1000);
 
-    const finished = new Date(started.getTime() + 60 * 60 * 1000); // Adicionando uma hora (em milissegundos)
+    const stationReservation = reservation
+      ? reservation
+      : await this.reservationService.findOneStationReservation(
+          station.id,
+          started,
+          finished,
+        );
+
+    if (stationReservation && !reservation) {
+      if (stationReservation.user.id !== user.id) {
+        if (stationReservation.started > started) {
+          finished = stationReservation.started;
+        } else {
+          throw new BadRequestException(
+            'Station already has reservation for another user',
+          );
+        }
+      } else if (stationReservation.user.id === user.id) {
+        if (stationReservation.started > started) {
+          finished = new Date(started.getTime() + 60 * 60 * 1000);
+          reservation = await this.reservationService.updateInterval(
+            stationReservation.id,
+            started,
+            finished,
+          );
+        }
+      }
+    }
     const recharge = this.rechargeRepository.create({
       started,
       finished,
@@ -58,6 +107,13 @@ export class RechargeService {
         'Problem to create a recharge. Try again',
       );
     }
+    reservation
+      ? await this.reservationService.updateRecharge(
+          reservation.id,
+          rechargeSaved.id,
+        )
+      : null;
+
     return rechargeSaved;
   }
 

@@ -108,11 +108,7 @@ describe('PlanetService', () => {
     it('Should update a hasStation', async () => {
       const planet = MockPlanet.mockPlanet();
       mockRepository.findOne.mockReturnValue(planet);
-      mockRepository.update.mockReturnValue({
-        ...planet,
-        hasStation: true,
-      });
-      mockRepository.create.mockReturnValue({
+      mockRepository.save.mockReturnValue({
         ...planet,
         hasStation: true,
       });
@@ -120,9 +116,8 @@ describe('PlanetService', () => {
       const resultPlanet = await service.updateHasStation('1');
 
       expect(resultPlanet).toMatchObject({ hasStation: true });
-      expect(mockRepository.create).toBeCalledTimes(1);
+      expect(mockRepository.save).toBeCalledTimes(1);
       expect(mockRepository.findOne).toBeCalledTimes(1);
-      expect(mockRepository.update).toBeCalledTimes(1);
     });
   });
 });

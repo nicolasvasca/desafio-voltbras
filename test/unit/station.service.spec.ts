@@ -77,11 +77,7 @@ describe('StationService', () => {
       mockPlanetRepository.findOne.mockReturnValue(station.planet);
       mockRepository.save.mockReturnValue(station);
       mockRepository.create.mockReturnValue(station);
-      mockPlanetRepository.update.mockReturnValue({
-        ...station.planet,
-        hasStation: true,
-      });
-      mockPlanetRepository.create.mockReturnValue({
+      mockPlanetRepository.save.mockReturnValue({
         ...station.planet,
         hasStation: true,
       });
