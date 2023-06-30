@@ -44,7 +44,7 @@ export class RechargeService {
       throw new BadRequestException('Station already has recharge in progress');
     }
 
-    const finished = new Date(started.getTime() + 60 * 60 * 1000); // Adicionando uma hora (em milissegundos)
+    const finished = new Date(started.getTime() + 60 * 60 * 1000);
     const recharge = this.rechargeRepository.create({
       started,
       finished,

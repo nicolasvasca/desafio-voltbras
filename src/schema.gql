@@ -35,6 +35,15 @@ type Recharge {
   finished: DateTime!
 }
 
+type Reservation {
+  id: ID!
+  user: User!
+  station: Station!
+  recharge: Recharge
+  started: DateTime!
+  finished: DateTime!
+}
+
 type Query {
   users: [User!]!
   user(id: String!): User!
@@ -42,6 +51,8 @@ type Query {
   planet(id: String!): Planet!
   stations: [Station!]!
   stationHistory(stationId: String!): [Recharge!]!
+  findByIdReservation(id: String!): Reservation!
+  reservations: [Reservation!]!
 }
 
 type Mutation {
@@ -51,6 +62,7 @@ type Mutation {
   installStation(input: CreateStationInput!): Station!
   recharge(input: CreateRechargeInput!): Recharge!
   finishRecharge(id: String!): Recharge!
+  reservation(input: CreateReservationInput!): Reservation!
 }
 
 input CreateUserInput {
@@ -71,4 +83,10 @@ input CreateStationInput {
 input CreateRechargeInput {
   userId: String!
   stationId: String!
+}
+
+input CreateReservationInput {
+  userId: String!
+  stationId: String!
+  start: DateTime!
 }
