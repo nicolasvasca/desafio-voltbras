@@ -15,5 +15,6 @@ import { RechargeModule } from './recharge.module';
     forwardRef(() => RechargeModule),
   ],
   providers: [ReservationService, ReservationResolver],
+  exports: [ReservationService],
 })
 export class ReservationModule {}
