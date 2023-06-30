@@ -13,6 +13,7 @@ import { Reservation } from '../../domain/models/reservation.entity';
 import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { CreateReservationInput } from '../../presentation/dtos/reservation/create-reservation.input';
 import VerifyDate from '../../utils/helpers/verify-date';
+import { RechargeService } from './recharge.service';
 
 @Injectable()
 export class ReservationService {
@@ -23,6 +24,8 @@ export class ReservationService {
     private readonly stationService: StationService,
     @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
+    @Inject(forwardRef(() => RechargeService))
+    private readonly rechargeService: RechargeService,
   ) {}
 
   async create(data: CreateReservationInput): Promise<Reservation> {
@@ -115,5 +118,19 @@ export class ReservationService {
       },
     });
     return reservations;
+  }
+
+  async updateRecharge(id: string, rechargeId: string): Promise<Reservation> {
+    const recharge = await this.rechargeService.findById(rechargeId);
+    const reservation = await this.findById(id);
+
+    await this.reservationRepository.update(reservation, { recharge });
+
+    const reservationUpdated = this.reservationRepository.create({
+      ...reservation,
+      recharge,
+    });
+
+    return reservationUpdated;
   }
 }
