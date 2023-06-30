@@ -17,6 +17,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
+import MockRecharge from './__mocks__/mock-recharge';
 
 describe('ReservationService', () => {
   let service: ReservationService;
@@ -233,6 +234,30 @@ describe('ReservationService', () => {
           });
         });
       expect(mockUserRepository.findOne).toBeCalledTimes(1);
+    });
+  });
+
+  describe('When update recharge Reservation', () => {
+    it('Should update recharge', async () => {
+      const reservation = MockReservation.mockReservation();
+      const recharge = MockRecharge.mockRecharge();
+      mockRechargeRepository.findOne.mockReturnValue(recharge);
+      mockRepository.findOne.mockReturnValue(reservation);
+      mockRepository.update.mockReturnValue({
+        ...reservation,
+        recharge,
+      });
+      mockRepository.create.mockReturnValue({
+        ...reservation,
+        recharge,
+      });
+
+      const resultPlanet = await service.updateRecharge('1', recharge.id);
+
+      expect(resultPlanet).toMatchObject({ recharge });
+      expect(mockRepository.create).toBeCalledTimes(1);
+      expect(mockRepository.findOne).toBeCalledTimes(1);
+      expect(mockRepository.update).toBeCalledTimes(1);
     });
   });
 });
