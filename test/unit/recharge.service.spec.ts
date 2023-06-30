@@ -17,6 +17,7 @@ import {
 } from '@nestjs/common';
 import { ReservationService } from '../../src/application/services/reservation.service';
 import { Reservation } from '../../src/domain/models/reservation.entity';
+import MockReservation from './__mocks__/mock-reservation';
 
 describe('RechargeService', () => {
   let service: RechargeService;
@@ -176,6 +177,51 @@ describe('RechargeService', () => {
           expect(e).toBeInstanceOf(BadRequestException);
         });
       expect(mockUserRepository.findOne).toBeCalledTimes(1);
+    });
+    it('should reservation is invalid', async () => {
+      const reservation = MockReservation.mockReservation();
+      const recharge = MockRecharge.mockRecharge();
+      mockStationRepository.findOne.mockReturnValue(recharge.station);
+      mockUserRepository.findOne.mockReturnValue(recharge.user);
+      mockRepository.findOne.mockReturnValue(null);
+      mockRepository.save.mockReturnValue(recharge);
+      mockRepository.create.mockReturnValue(recharge);
+      mockReservationRepository.findOne.mockReturnValue(reservation);
+
+      await service
+        .create({
+          reservationId: reservation.id,
+        })
+        .catch((e) => {
+          expect(e).toBeInstanceOf(BadRequestException);
+          expect(e).toMatchObject({
+            message: 'The reservation is not valid!',
+          });
+        });
+      expect(mockReservationRepository.findOne).toBeCalledTimes(1);
+    });
+
+    it('should reservation when doesnt find', async () => {
+      const reservation = MockReservation.mockReservation();
+      const recharge = MockRecharge.mockRecharge();
+      mockStationRepository.findOne.mockReturnValue(recharge.station);
+      mockUserRepository.findOne.mockReturnValue(recharge.user);
+      mockRepository.findOne.mockReturnValue(null);
+      mockRepository.save.mockReturnValue(recharge);
+      mockRepository.create.mockReturnValue(recharge);
+      mockReservationRepository.findOne.mockReturnValue(null);
+
+      await service
+        .create({
+          reservationId: reservation.id,
+        })
+        .catch((e) => {
+          expect(e).toBeInstanceOf(NotFoundException);
+          expect(e).toMatchObject({
+            message: 'Reservation not found',
+          });
+        });
+      expect(mockReservationRepository.findOne).toBeCalledTimes(1);
     });
   });
 
