@@ -83,6 +83,25 @@ describe('ReservationService', () => {
     });
   });
 
+  describe('When search one station reservations', () => {
+    it('should be list all reservations', async () => {
+      const reservation = MockReservation.mockReservation();
+      mockRepository.findOne.mockReturnValue(reservation);
+      const reservationFound = await service.findOneStationReservation(
+        reservation.station.id,
+        reservation.started,
+        reservation.finished,
+      );
+      expect(reservationFound).toMatchObject({
+        id: reservation.id,
+        user: reservation.user,
+        station: reservation.station,
+        recharge: reservation.recharge,
+      });
+      expect(mockRepository.findOne).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe('When search Resevation By Id', () => {
     it('should find a existing planet', async () => {
       const reservation = MockReservation.mockReservation();
@@ -237,7 +256,7 @@ describe('ReservationService', () => {
     });
   });
 
-  describe('When update recharge Reservation', () => {
+  describe('When update Reservation', () => {
     it('Should update recharge', async () => {
       const reservation = MockReservation.mockReservation();
       const recharge = MockRecharge.mockRecharge();
@@ -251,6 +270,26 @@ describe('ReservationService', () => {
       const resultPlanet = await service.updateRecharge('1', recharge.id);
 
       expect(resultPlanet).toMatchObject({ recharge });
+      expect(mockRepository.save).toBeCalledTimes(1);
+      expect(mockRepository.findOne).toBeCalledTimes(1);
+    });
+
+    it('Should update recharge', async () => {
+      const reservation = MockReservation.mockReservation();
+      const recharge = MockRecharge.mockRecharge();
+      mockRechargeRepository.findOne.mockReturnValue(recharge);
+      mockRepository.findOne.mockReturnValue(reservation);
+      const started = new Date();
+      const finished = new Date(started.getTime() + 60 * 60 * 1000);
+      mockRepository.save.mockReturnValue({
+        ...reservation,
+        started,
+        finished,
+      });
+
+      const resultPlanet = await service.updateInterval('1', started, finished);
+
+      expect(resultPlanet).toMatchObject({ started, finished });
       expect(mockRepository.save).toBeCalledTimes(1);
       expect(mockRepository.findOne).toBeCalledTimes(1);
     });
