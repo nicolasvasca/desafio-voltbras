@@ -1,13 +1,20 @@
 import { InputType } from '@nestjs/graphql';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 @InputType()
 export class CreateRechargeInput {
+  @IsOptional()
   @IsString()
   @IsNotEmpty({ message: 'Invalid characters' })
-  userId: string;
+  userId?: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty({ message: 'Invalid characters' })
-  stationId: string;
+  stationId?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty({ message: 'Invalid characters' })
+  reservationId?: string;
 }

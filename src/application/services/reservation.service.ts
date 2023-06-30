@@ -124,7 +124,7 @@ export class ReservationService {
     const recharge = await this.rechargeService.findById(rechargeId);
     const reservation = await this.findById(id);
 
-    reservation.recharge = recharge; // Atualiza a propriedade 'recharge' na reserva
+    reservation.recharge = recharge;
 
     const updatedReservation = await this.reservationRepository.save(
       reservation,
@@ -156,5 +156,22 @@ export class ReservationService {
       },
     });
     return reservation;
+  }
+
+  async updateInterval(
+    id: string,
+    started: Date,
+    finished: Date,
+  ): Promise<Reservation> {
+    const reservation = await this.findById(id);
+
+    reservation.started = started;
+    reservation.finished = finished;
+
+    const updatedReservation = await this.reservationRepository.save(
+      reservation,
+    );
+
+    return updatedReservation;
   }
 }

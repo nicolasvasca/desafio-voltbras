@@ -81,8 +81,9 @@ input CreateStationInput {
 }
 
 input CreateRechargeInput {
-  userId: String!
-  stationId: String!
+  userId: String
+  stationId: String
+  reservationId: String
 }
 
 input CreateReservationInput {
