@@ -124,13 +124,37 @@ export class ReservationService {
     const recharge = await this.rechargeService.findById(rechargeId);
     const reservation = await this.findById(id);
 
-    await this.reservationRepository.update(reservation, { recharge });
+    reservation.recharge = recharge; // Atualiza a propriedade 'recharge' na reserva
 
-    const reservationUpdated = this.reservationRepository.create({
-      ...reservation,
-      recharge,
+    const updatedReservation = await this.reservationRepository.save(
+      reservation,
+    );
+
+    return updatedReservation;
+  }
+
+  async findOneStationReservation(
+    stationId: string,
+    started: Date,
+    finished: Date,
+  ): Promise<Reservation> {
+    const reservation = await this.reservationRepository.findOne({
+      where: [
+        {
+          station: { id: stationId },
+          started: LessThanOrEqual(started),
+          finished: MoreThanOrEqual(started),
+        },
+        {
+          station: { id: stationId },
+          started: LessThanOrEqual(finished),
+          finished: MoreThanOrEqual(finished),
+        },
+      ],
+      relations: {
+        user: true,
+      },
     });
-
-    return reservationUpdated;
+    return reservation;
   }
 }

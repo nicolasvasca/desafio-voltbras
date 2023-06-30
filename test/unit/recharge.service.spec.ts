@@ -15,6 +15,8 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
+import { ReservationService } from '../../src/application/services/reservation.service';
+import { Reservation } from '../../src/domain/models/reservation.entity';
 
 describe('RechargeService', () => {
   let service: RechargeService;
@@ -22,6 +24,8 @@ describe('RechargeService', () => {
   let mockStationRepository = MockRepository.mockRepository();
   let mockUserRepository = MockRepository.mockRepository();
   let mockPlanetRepository = MockRepository.mockRepository();
+  let mockReservationRepository = MockRepository.mockRepository();
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -29,6 +33,7 @@ describe('RechargeService', () => {
         UserService,
         StationService,
         PlanetService,
+        ReservationService,
         {
           provide: getRepositoryToken(Recharge),
           useValue: mockRepository,
@@ -45,6 +50,10 @@ describe('RechargeService', () => {
           provide: getRepositoryToken(Planet),
           useValue: mockPlanetRepository,
         },
+        {
+          provide: getRepositoryToken(Reservation),
+          useValue: mockReservationRepository,
+        },
       ],
     }).compile();
 
@@ -60,6 +69,9 @@ describe('RechargeService', () => {
     mockStationRepository = MockRepository.resetMocks(mockStationRepository);
     mockUserRepository = MockRepository.resetMocks(mockUserRepository);
     mockPlanetRepository = MockRepository.resetMocks(mockPlanetRepository);
+    mockReservationRepository = MockRepository.resetMocks(
+      mockReservationRepository,
+    );
   });
 
   describe('When create recharge', () => {
