@@ -11,12 +11,14 @@ import { SeedModule } from './infra/ioc/seed.module';
 import { StationModule } from './infra/ioc/station.module';
 import { RechargeModule } from './infra/ioc/recharge.module';
 import { ReservationModule } from './infra/ioc/reservation.module';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
+import { AuthModule } from './infra/ioc/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -38,6 +40,7 @@ dotenv.config();
     StationModule,
     RechargeModule,
     ReservationModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -44,6 +44,11 @@ type Reservation {
   finished: DateTime!
 }
 
+type AuthType {
+  user: User!
+  token: String!
+}
+
 type Query {
   users: [User!]!
   user(id: String!): User!
@@ -56,18 +61,20 @@ type Query {
 }
 
 type Mutation {
-  createUser(data: CreateUserInput!): User!
-  updateUser(id: String!, data: UpdateUserInput!): User!
+  register(input: CreateUserInput!): User!
+  updateUser(id: String!, input: UpdateUserInput!): User!
   deleteUser(id: String!): Boolean!
   installStation(input: CreateStationInput!): Station!
   recharge(input: CreateRechargeInput!): Recharge!
   finishRecharge(id: String!): Recharge!
   reservation(input: CreateReservationInput!): Reservation!
+  login(input: AuthInput!): AuthType!
 }
 
 input CreateUserInput {
   name: String!
   email: String!
+  password: String!
 }
 
 input UpdateUserInput {
@@ -90,4 +97,9 @@ input CreateReservationInput {
   userId: String!
   stationId: String!
   start: DateTime!
+}
+
+input AuthInput {
+  email: String!
+  password: String!
 }
