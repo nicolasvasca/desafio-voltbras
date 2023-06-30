@@ -40,6 +40,7 @@ export class UserResolver {
     return user;
   }
 
+  @UseGuards(GqlAuthGuard)
   @Mutation(() => Boolean)
   async deleteUser(@Args('id') id: string): Promise<boolean> {
     const deleted = await this.userService.deleteUser(id);
